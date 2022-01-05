@@ -23,6 +23,7 @@ class ClientPrefs {
 	public static var arrowHSV:Array<Array<Int>> = [[0, 0, 0], [0, 0, 0], [0, 0, 0], [0, 0, 0]];
 	public static var imagesPersist:Bool = false;
 	public static var ghostTapping:Bool = true;
+	public static var showSongTitle:Bool = true;
 	public static var timeBarType:String = 'Time Left';
 	public static var scoreZoom:Bool = true;
 	public static var noReset:Bool = false;
@@ -129,6 +130,7 @@ class ClientPrefs {
 		FlxG.save.data.gameplaySettings = gameplaySettings;
 		FlxG.save.data.controllerMode = controllerMode;
 		FlxG.save.data.screenRes = screenRes;
+		FlxG.save.data.showSongTitle = showSongTitle;
 	
 		FlxG.save.flush();
 
@@ -249,6 +251,10 @@ class ClientPrefs {
 		if (FlxG.save.data.mute != null)
 		{
 			FlxG.sound.muted = FlxG.save.data.mute;
+		}
+		if(FlxG.save.data.showSongTitle != null)
+		{
+			showSongTitle = FlxG.save.data.showSongTitle;
 		}
 
 		var save:FlxSave = new FlxSave();

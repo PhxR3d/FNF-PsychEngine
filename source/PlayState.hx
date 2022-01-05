@@ -184,6 +184,7 @@ class PlayState extends MusicBeatState
 
 	public var botplaySine:Float = 0;
 	public var botplayTxt:FlxText;
+	public var curSongTxt:FlxText;
 
 	public var iconP1:HealthIcon;
 	public var iconP2:HealthIcon;
@@ -1033,7 +1034,23 @@ class PlayState extends MusicBeatState
 		if(ClientPrefs.downScroll) {
 			botplayTxt.y = timeBarBG.y - 78;
 		}
+        
 
+		curSongTxt = new FlxText(0, FlxG.height - 24, 0, SONG.song + " - " +
+		CoolUtil.difficultyString(false));
+	    curSongTxt.setFormat(Paths.font("vcr.ttf"), 20, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+	    curSongTxt.scrollFactor.set();
+	    curSongTxt.borderSize = 1.25;
+	    add(curSongTxt);
+		if(ClientPrefs.showSongTitle = false) 
+		{
+			curSongTxt.visible = false;
+		} else {
+			curSongTxt.visible = true;
+		}
+		
+		
+        
 		strumLineNotes.cameras = [camHUD];
 		grpNoteSplashes.cameras = [camHUD];
 		notes.cameras = [camHUD];
@@ -1043,6 +1060,7 @@ class PlayState extends MusicBeatState
 		iconP2.cameras = [camHUD];
 		scoreTxt.cameras = [camHUD];
 		botplayTxt.cameras = [camHUD];
+		curSongTxt.cameras = [camHUD];
 		timeBar.cameras = [camHUD];
 		timeBarBG.cameras = [camHUD];
 		timeTxt.cameras = [camHUD];

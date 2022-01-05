@@ -88,6 +88,13 @@ class VisualsUISubState extends BaseOptionsMenu
 		option.changeValue = 0.1;
 		option.decimals = 1;
 		addOption(option);
+
+		var option:Option = new Option('Show Song Title',
+		    "If unchecked, the song title and difficulty\nwill not be shown.",
+			'showSongTitle',
+			'bool',
+			true);
+		addOption(option);
 		
 		#if !mobile
 		var option:Option = new Option('FPS Counter',

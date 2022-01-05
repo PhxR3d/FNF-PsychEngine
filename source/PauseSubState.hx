@@ -19,7 +19,11 @@ class PauseSubState extends MusicBeatSubstate
 	var grpMenuShit:FlxTypedGroup<Alphabet>;
 
 	var menuItems:Array<String> = [];
-	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Change Difficulty', 'Exit to menu'];
+	var menuItemsOG:Array<String> = ['Resume', 'Restart Song', 'Options', 'Exit to menu'];
+	var options:Array<String> = ['Change Difficulty', 'Quick Settings', 'BACK'];
+	var quicksettings:Array<String> = ['Visuals', 'Gameplay', 'BACK'];
+	var visualsettings:Array<String> = ['Toggle Hud','Toggle Flashing Lights','Toggle Camera Zooms','Toggle Low Quality Mode','Toggle Antialiasing', 'BACK'];
+	var gameplaysettings:Array<String> = ['Toggle Ghost Tapping','Toggle Controller Mode','Toggle Downscroll','Toggle Middlescroll', 'BACK']
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
@@ -36,8 +40,8 @@ class PauseSubState extends MusicBeatSubstate
 
 		if(PlayState.chartingMode)
 		{
-			menuItemsOG.insert(2, 'Toggle Practice Mode');
-			menuItemsOG.insert(3, 'Toggle Botplay');
+			gameplaysettings.insert(2, 'Toggle Practice Mode');
+			gameplaysettings.insert(3, 'Toggle Botplay');
 		}
 		menuItems = menuItemsOG;
 
@@ -64,6 +68,27 @@ class PauseSubState extends MusicBeatSubstate
 		levelInfo.setFormat(Paths.font("vcr.ttf"), 32);
 		levelInfo.updateHitbox();
 		add(levelInfo);
+		
+		var settingswarnTxt = new FlxText(690, FlxG.height - 22, 0, 'NOTE: THIS WILL CAUSE THE SONG TO RESTART!!');
+		settingswarnTxt.setFormat(Paths.font("vcr.ttf"), 16, FlxColor.WHITE, RIGHT, FlxTextBorderStyle.OUTLINE, FlxColor.BLACK);
+		settingswarnTxt.scrollFactor.set();
+		settingswarnTxt.borderSize = 1.25;
+		add(settingswarnTxt);
+		if(menuItems = menuItemsOG) {
+			settingswarnTxt.visible = false;
+		}
+		else if (menuItems = quicksettings) {
+			settingswarnTxt.visible = false;
+		}
+		else if (menuItems = options) {
+			settingswarnTxt.visible = false;
+		}
+		else if (menuItems = difficultyChoices) {
+			settingswarnTxt.visible = false;
+		}
+		else {
+			settingswarnTxt.visible = true;
+		}
 
 		var levelDifficulty:FlxText = new FlxText(20, 15 + 32, 0, "", 32);
 		levelDifficulty.text += CoolUtil.difficultyString();
@@ -99,6 +124,7 @@ class PauseSubState extends MusicBeatSubstate
 		blueballedTxt.alpha = 0;
 		levelDifficulty.alpha = 0;
 		levelInfo.alpha = 0;
+		settingswarnTxt.alpha = 0;
 
 		levelInfo.x = FlxG.width - (levelInfo.width + 20);
 		levelDifficulty.x = FlxG.width - (levelDifficulty.width + 20);
@@ -108,6 +134,7 @@ class PauseSubState extends MusicBeatSubstate
 		FlxTween.tween(levelInfo, {alpha: 1, y: 20}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.3});
 		FlxTween.tween(levelDifficulty, {alpha: 1, y: levelDifficulty.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.5});
 		FlxTween.tween(blueballedTxt, {alpha: 1, y: blueballedTxt.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.7});
+		FlxTween.tween(settingswarnTxt, {alpha: 1, y: settingswarnTxt.y + 5}, 0.4, {ease: FlxEase.quartInOut, startDelay: 0.9});
 
 		grpMenuShit = new FlxTypedGroup<Alphabet>();
 		add(grpMenuShit);
@@ -168,6 +195,9 @@ class PauseSubState extends MusicBeatSubstate
 				case 'Change Difficulty':
 					menuItems = difficultyChoices;
 					regenMenu();
+				case 'Options':
+					menuItems = options;
+					regenMenu();
 				case 'Toggle Practice Mode':
 					PlayState.instance.practiceMode = !PlayState.instance.practiceMode;
 					PlayState.changedDifficulty = true;
@@ -180,6 +210,33 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.instance.botplayTxt.visible = PlayState.instance.cpuControlled;
 					PlayState.instance.botplayTxt.alpha = 1;
 					PlayState.instance.botplaySine = 0;
+				case 'Toggle Ghost Tapping':
+					ClientPrefs.ghostTapping = !ClientPrefs.ghostTapping;
+					MusicBeatState.switchState(new PlayState());
+				case 'Toggle Controller Mode':
+					ClientPrefs.controllerMode = !ClientPrefs.controllerMode;
+					MusicBeatState.switchState(new PlayState());
+				case 'Toggle Antialiasing':
+					ClientPrefs.globalAntialiasing = !ClientPrefs.globalAntialiasing;
+					MusicBeatState.switchState(new PlayState());
+				case 'Toggle Downscroll':
+					ClientPrefs.downScroll = !ClientPrefs.downScroll;
+					MusicBeatState.switchState(new PlayState());
+				case 'Toggle Middlescroll':
+					ClientPrefs.middleScroll = !ClientPrefs.middleScroll;
+					MusicBeatState.switchState(new PlayState());
+				case 'Toggle Low Quality':
+					ClientPrefs.lowQuality = !ClientPrefs.lowQuality;
+					MusicBeatState.switchState(new PlayState());
+				case 'Toggle Hud':
+					ClientPrefs.hideHud = !ClientPrefs.hideHud;
+					MusicBeatState.switchState(new PlayState());
+				case 'Toggle Flashing Lights':
+				    ClientPrefs.flashing = !ClientPrefs.flashing;
+					MusicBeatState.switchState(new PlayState());
+				case 'Toggle Camera Zooms':
+					ClientPrefs.camZooms = !ClientPrefs.camZooms;
+					MusicBeatState.switchState(new PlayState());
 				case "Exit to menu":
 					PlayState.deathCounter = 0;
 					PlayState.seenCutscene = false;
@@ -193,8 +250,26 @@ class PauseSubState extends MusicBeatSubstate
 					PlayState.chartingMode = false;
 
 				case 'BACK':
+					if(menuItems = quicksettings) {
+						menuItems = options;
+						regenMenu();
+					} 
+					else if(menuItems = visualsettings) {
+						menuItems = quicksettings;
+						regenMenu(); 
+					}
+					else if(menuItems = gameplaysettings) {
+						menuItems = quicksettings;
+						regenMenu();
+					}
+					else if(menuItems = difficultyChoices) {
+						menuItems = options;
+						regenMenu();
+					}
+					else {
 					menuItems = menuItemsOG;
 					regenMenu();
+					}
 			}
 		}
 	}
