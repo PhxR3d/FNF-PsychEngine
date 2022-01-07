@@ -23,7 +23,7 @@ class PauseSubState extends MusicBeatSubstate
 	var options:Array<String> = ['Change Difficulty', 'Quick Settings', 'BACK'];
 	var quicksettings:Array<String> = ['Visuals', 'Gameplay', 'BACK'];
 	var visualsettings:Array<String> = ['Toggle Hud','Toggle Flashing Lights','Toggle Camera Zooms','Toggle Low Quality Mode','Toggle Antialiasing', 'BACK'];
-	var gameplaysettings:Array<String> = ['Toggle Ghost Tapping','Toggle Controller Mode','Toggle Downscroll','Toggle Middlescroll', 'BACK']
+	var gameplaysettings:Array<String> = ['Toggle Ghost Tapping','Toggle Controller Mode','Toggle Downscroll','Toggle Middlescroll', 'BACK'];
 	var difficultyChoices = [];
 	var curSelected:Int = 0;
 
